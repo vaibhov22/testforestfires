@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FWI Prediction - Algerian Forest Fires</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Algerian Forest Fire Prediction</h1>
+    </header>
+
+    <main class="container">
+
+        <!-- Prediction Form -->
+        <section class="card">
+            <h2>Predict FWI</h2>
+            <form action="/predict" method="POST">
+                <div class="form-grid">
+                    <input type="number" step="any" name="Temperature" placeholder="Temperature (°C)" required>
+                    <input type="number" step="any" name="RH" placeholder="Relative Humidity (%)" required>
+                    <input type="number" step="any" name="Ws" placeholder="Wind Speed (km/h)" required>
+                    <input type="number" step="any" name="Rain" placeholder="Rain (mm)" required>
+                    <input type="number" step="any" name="FFMC" placeholder="FFMC Index" required>
+                    <input type="number" step="any" name="DMC" placeholder="DMC Index" required>
+                    <input type="number" step="any" name="ISI" placeholder="ISI Index" required>
+                    <input type="number" step="any" name="Classes" placeholder="Classes (0 or 1)" required>
+                    <input type="number" step="any" name="Region" placeholder="Region (0 or 1)" required>
+                </div>
+                <button type="submit">Predict FWI</button>
+            </form>
+
+            {% if prediction is defined %}
+            <div class="prediction-result {{ severity }}">
+                FWI Prediction: <strong>{{ prediction }}</strong>
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- FWI Info -->
+        <section class="card">
+            <h2>What is FWI?</h2>
+            <p>The Fire Weather Index (FWI) is a numerical rating of the potential for wildfire ignition and spread. It ranges from low to high risk:</p>
+            <ul>
+                <li>Low: FWI &lt; 10 (Green)</li>
+                <li>Moderate: 10 ≤ FWI ≤ 20 (Yellow)</li>
+                <li>High: FWI &gt; 20 (Red)</li>
+            </ul>
+        </section>
+
+        <!-- Features Info -->
+        <section class="card">
+            <h2>Input Features</h2>
+            <table>
+                <tr><th>Feature</th><th>Description</th></tr>
+                <tr><td>Temperature</td><td>Air temperature in °C</td></tr>
+                <tr><td>RH</td><td>Relative Humidity (%)</td></tr>
+                <tr><td>Ws</td><td>Wind Speed in km/h</td></tr>
+                <tr><td>Rain</td><td>Rainfall (mm)</td></tr>
+                <tr><td>FFMC</td><td>Fine Fuel Moisture Code</td></tr>
+                <tr><td>DMC</td><td>Drought Code</td></tr>
+                <tr><td>ISI</td><td>Initial Spread Index</td></tr>
+                <tr><td>Classes</td><td>Vegetation type class (0 or 1)</td></tr>
+                <tr><td>Region</td><td>Region code (0 or 1)</td></tr>
+            </table>
+        </section>
+
+        <!-- Model Info -->
+        <section class="card">
+            <h2>About the Model</h2>
+            <p>We trained a Ridge Regression model using historical Algerian forest fire data. Features are scaled using StandardScaler before making predictions. Ridge regression helps reduce overfitting and provides stable predictions.</p>
+        </section>
+
+        <!-- Tips / Applications -->
+        <section class="card">
+            <h2>Tips & Applications</h2>
+            <ul>
+                <li>Use predictions to plan preventive measures.</li>
+                <li>High FWI indicates high risk of fire spread.</li>
+                <li>Monitor conditions in high-risk regions frequently.</li>
+            </ul>
+        </section>
+
+    </main>
+</body>
+</html>
